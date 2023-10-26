@@ -2,37 +2,34 @@
   <v-app>
     <v-main>
       <CreateItemComponent @create-item="createItem" />
-      <EditItemComponent
-        ref="editItemComponent"
-        v-if="editedItem"
-        :item="editedItem"
-        @save-item="editItem"
-        @close-edit="editedItem = null"
-      />
+      <EditItemComponent ref="editItemComponent" v-if="editedItem" :item="editedItem" @save-item="editItem"
+        @close-edit="editedItem = null" />
 
-      <v-list>
-        <v-list-item-group v-if="items.length > 0">
-          <v-list-item v-for="item in items" :key="item._id">
-            <v-list-item-content>
-              <v-list-item-title>{{ item.name }}</v-list-item-title>
-              <v-list-item-subtitle>{{
-                item.description
-              }}</v-list-item-subtitle>
-            </v-list-item-content>
-            <v-list-item-action>
-              <v-btn icon @click="startEditing(item)">
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
-              <v-btn icon @click="deleteItem(item._id)">
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-            </v-list-item-action>
-          </v-list-item>
-        </v-list-item-group>
-        <v-list-item v-else>
-          <v-list-item-content>No items found</v-list-item-content>
-        </v-list-item>
-      </v-list>
+      <v-container>
+        <v-row>
+          <v-col v-for="item in items" :key="item._id" cols="12" md="4">
+            <v-card>
+              <v-card-title>Species: {{ item.species }}</v-card-title>
+              <v-card-text>Total Count: {{ item.count }}</v-card-text>
+              <v-card-actions>
+                <v-btn icon @click="startEditing(item)">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+                <v-btn icon @click="deleteItem(item._id)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row v-if="items.length === 0">
+          <v-col>
+            <v-card>
+              <v-card-text>No items found</v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-main>
     <Notifications group="main" />
   </v-app>
@@ -94,13 +91,15 @@ export default {
     },
     startEditing(item) {
       this.editedItem = { ...item };
-  this.$nextTick(() => {
-    if (this.$refs.editItemComponent) {
-      this.$refs.editItemComponent.dialog = true;
-    } else {
-      console.error("EditItemComponent is not mounted or ref is not set correctly");
-    }
-  });
+      this.$nextTick(() => {
+        if (this.$refs.editItemComponent) {
+          this.$refs.editItemComponent.dialog = true;
+        } else {
+          console.error(
+            "EditItemComponent is not mounted or ref is not set correctly"
+          );
+        }
+      });
     },
     editItem(item) {
       this.db
