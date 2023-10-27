@@ -55,8 +55,8 @@ export default {
     };
   },
   created() {
-    this.db = new PouchDB("LocalBioBlitz");
-    this.remoteCouch = "http://localhost:5984/js_test";
+    this.db = new PouchDB("total_species_count");
+    this.remoteCouch = "http://localhost:5984/total_species_count";
     this.sync();
     this.fetchItems();
   },
